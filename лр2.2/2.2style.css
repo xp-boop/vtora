@@ -1,0 +1,13 @@
+.animated-block {
+    width: 200px;
+    height: 200px;
+    background: #3498db;
+    margin: 50px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animated-block:hover {
+    transform: scale(1.15);
+    background: #e74c3c;
+    border-radius: 15px;
+}
