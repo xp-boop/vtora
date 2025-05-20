@@ -1,0 +1,12 @@
+input {
+    padding: 10px;
+    margin: 20px;
+    width: 250px;
+    border: 2px solid #ddd;
+    transition: border-color 0.3s ease;
+}
+
+input.error {
+    border-color: #e74c3c;
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
+}
