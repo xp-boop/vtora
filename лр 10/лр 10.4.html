@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .gallery { max-width: 800px; margin: 0 auto; }
+        #mainImg { width: 100%; height: 400px; object-fit: cover; }
+        .thumbnails { display: flex; gap: 10px; margin-top: 10px; }
+        .thumbnail { 
+            width: 100px; 
+            height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .active { border-color: blue; }
+    </style>
+</head>
+<body>
+    <div class="gallery">
+        <img id="mainImg" src="https://picsum.photos/800/400" alt="Main">
+        <div class="thumbnails">
+            <img class="thumbnail active" src="https://picsum.photos/800/400" 
+                 onclick="changeImage(this)">
+            <img class="thumbnail" src="https://picsum.photos/801/400" 
+                 onclick="changeImage(this)">
+            <img class="thumbnail" src="https://picsum.photos/802/400" 
+                 onclick="changeImage(this)">
+        </div>
+    </div>
+    <script>
+        function changeImage(thumb) {
+            document.getElementById('mainImg').src = thumb.src;
+            document.querySelectorAll('.thumbnail').forEach(t => 
+                t.classList.remove('active'));
+            thumb.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

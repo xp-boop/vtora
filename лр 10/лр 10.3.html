@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        
+            <style>
+                .invalid { border: 2px solid red !important; }
+                form { max-width: 400px; padding: 20px; }
+                input { 
+                    width: 100%; 
+                    padding: 8px;
+                    margin: 5px 0;
+                    border: 1px solid #ddd;
+                }
+                .error { color: red; font-size: 0.9em; }
+            </style>
+    </head>
+    <body>
+        <form>
+            <input type="email" placeholder="Email" required>
+            <div class="error"></div>
+            
+            <input type="password" placeholder="Password" minlength="6" required>
+            <div class="error"></div>
+            
+            <button type="submit">отправить</button>
+        </form>
+        <script>
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', () => {
+                    const error = input.nextElementSibling;
+                    if (!input.checkValidity()) {
+                        input.classList.add('invalid');
+                        error.textContent = input.validationMessage;
+                    } else {
+                        input.classList.remove('invalid');
+                        error.textContent = '';
+                    }
+                });
+            });
+        </script>
+    </body>
+
+</html>

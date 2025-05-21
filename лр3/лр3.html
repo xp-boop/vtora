@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+        
+        #mouseArea {
+            width: 300px;
+            height: 150px;
+            background-color: #f0f0f0;
+            margin: 20px 0;
+            padding: 10px;
+        }
+
+        #eventLog {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 300px;
+            height: 200px;
+            overflow-y: auto;
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Область для лога событий -->
+    <div id="eventLog"></div>
+
+    <!-- Задачи 1-3 -->
+    <div class="container">
+        <button id="btn1">Кнопка 1</button>
+        <a href="#" id="link">Ссылка (предотвратить переход)</a>
+        
+        <form id="myForm">
+            <input type="text" placeholder="Введите текст">
+            <button type="submit">Отправить</button>
+        </form>
+
+        <div id="parentElement">
+            <button id="nestedBtn">Вложенная кнопка</button>
+        </div>
+
+        <div id="mouseArea">
+            Двигайте мышью здесь
+            <div id="coordinates"></div>
+        </div>
+    </div>
+
+    <!-- Задача 4 -->
+    <div class="container">
+        <button id="customEventTrigger">Вызвать кастомное событие</button>
+        <div id="customEventOutput"></div>
+    </div>
+
+    <script>
+        // Логгер событий
+        function logEvent(message) {
+            const log = document.getElementById('eventLog');
+            log.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+            console.log(message);
+        }
+
+        // 1. Обработчики событий для разных элементов
+        document.getElementById('btn1').addEventListener('click', function(e) {
+            logEvent(`Клик на кнопке: ${e.target.tagName} ${e.type}`);
+        });
+
+        document.getElementById('link').addEventListener('click', function(e) {
+            e.preventDefault();
+            logEvent(`Предотвращен переход по ссылке: ${e.type}`);
+        });
+
+        document.querySelector('input').addEventListener('keypress', function(e) {
+            logEvent(`Клавиша нажата: ${e.key} (Код: ${e.keyCode})`);
+        });
+
+        document.querySelector('input').addEventListener('focus', function(e) {
+            logEvent(`Фокус на поле ввода: ${e.type}`);
+        });
+
+        // 2. Вывод информации о событии
+        document.getElementById('parentElement').addEventListener('click', function(e) {
+            logEvent(`Родительский элемент: ${e.target.tagName} ${e.type}`);
+        });
+
+        // 3.1 Отмена действия по умолчанию для формы
+        document.getElementById('myForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            logEvent(`Форма отправлена, действие по умолчанию отменено: ${e.type}`);
+        });
+
+        // 3.2 Остановка всплытия
+        document.getElementById('nestedBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            logEvent(`Клик на вложенной кнопке (всплытие остановлено): ${e.type}`);
+        });
+
+        // 3.3 Координаты мыши
+        const mouseArea = document.getElementById('mouseArea');
+        mouseArea.addEventListener('mousemove', function(e) {
+            const coordinates = document.getElementById('coordinates');
+            coordinates.textContent = `X: ${e.clientX}, Y: ${e.clientY}`;
+            logEvent(`Движение мыши: X=${e.clientX}, Y=${e.clientY}`);
+        });
+
+        // 4. Кастомное событие
+        const customEvent = new CustomEvent('myCustomEvent', {
+            detail: { message: 'Это кастомное событие!', timestamp: Date.now() }
+        });
+
+        const customOutput = document.getElementById('customEventOutput');
+        document.addEventListener('myCustomEvent', function(e) {
+            customOutput.innerHTML = `
+                <h3>${e.detail.message}</h3>
+                <p>Время: ${new Date(e.detail.timestamp).toLocaleTimeString()}</p>
+            `;
+        });
+
+        document.getElementById('customEventTrigger').addEventListener('click', function() {
+            document.dispatchEvent(customEvent);
+            logEvent('Кастомное событие инициировано');
+        });
+    </script>
+</body>
+</html>
